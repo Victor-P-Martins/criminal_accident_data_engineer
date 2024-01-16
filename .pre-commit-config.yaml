@@ -17,15 +17,15 @@ repos:
         [
           "-rn", # Only display messages
         ]
-# -   repo: local
-#     hooks:
-#     - id: pytest
-#       name: pytest
-#       language: system
-#       entry: pytest -x -v
-#       always_run: true
-#       pass_filenames: false
-#       stages: [commit]
+-   repo: local
+    hooks:
+    - id: pytest
+      name: pytest
+      language: system
+      entry: pytest -x -v
+      always_run: true
+      pass_filenames: false
+      stages: [commit]
 -   repo: local
     hooks:
       - id: requirements
