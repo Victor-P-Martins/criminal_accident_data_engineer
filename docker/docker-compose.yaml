@@ -1,0 +1,42 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DAGSTER_POSTGRES_USER}
+      POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_USER}
+
+  webserver:
+    image: apache/airflow:latest
+    restart: always
+    command: standalone #webserver
+    depends_on:
+      - postgres
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../orchestrator/dags:/opt/airflow/dags
+      - ../orchestrator/src:/opt/airflow/src
+  # scheduler:
+  #   image: apache/airflow:latest
+  #   restart: always
+  #   command: airflow scheduler
+  #   depends_on:
+  #     - webserver
+  #   environment:
+  #     - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+  #     - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+
+  # worker:
+  #   image: apache/airflow:latest
+  #   restart: always
+  #   command: celery worker
+  #   depends_on:
+  #     - webserver
+  #   environment:
+  #     - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+  #     - AIRFLOW__CORE__EXECUTOR=LocalExecutor
