@@ -16,6 +16,7 @@ repos:
       args:
         [
           "-rn", # Only display messages
+          "--fail-under=10"
         ]
 -   repo: local
     hooks:

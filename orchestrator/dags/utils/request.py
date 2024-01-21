@@ -1,4 +1,5 @@
 import traceback
+
 import requests
 from requests.adapters import HTTPAdapter, Retry
 
@@ -38,7 +39,7 @@ class Request:
         print(f"Erro na requisição: {response}")
         return response
 
-    def get(self, url: str, payload: dict = None) -> object:
+    def get(self, url: str, payload: dict = None, files: list = None) -> object:
         """
         Sends a GET request to the specified URL.
 
@@ -51,7 +52,7 @@ class Request:
         """
         try:
             response = self.session.request(
-                "GET", url, headers=self.headers, params=payload
+                "GET", url, headers=self.headers, params=payload, files=files
             )
 
         except requests.exceptions.RequestException:
