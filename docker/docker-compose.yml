@@ -1,24 +1,24 @@
 version: '3.8'
-x-airflow-common:
-  &airflow-common
+x-airflow-common: &airflow-common
   build: .
   environment: &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${DAGSTER_POSTGRES_USER}:${DAGSTER_POSTGRES_PASSWORD}@postgres/airflow
-    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${DAGSTER_POSTGRES_USER}:${DAGSTER_POSTGRES_PASSWORD}@postgres/airflow
-    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${DAGSTER_POSTGRES_USER}:${DAGSTER_POSTGRES_PASSWORD}@postgres/airflow
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/airflow
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/airflow
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
   volumes:
-    - ../orchestrator/dags:/opt/airflow/orchestrator/dags
-    - ../orchestrator/logs:/opt/airflow/orchestrator/logs
-    - ../orchestrator/config:/opt/airflow/orchestrator/config
-    - ../orchestrator/plugins:/opt/airflow/orchestrator/plugins
+    - ../airflow/dags:/opt/airflow/dags
+    - ../airflow/logs:/opt/airflow/logs
+    - ../airflow/config:/opt/airflow/config
+    - ../airflow/plugins:/opt/airflow/plugins
+    - ../includes:/opt/airflow/plugins/includes
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on: &airflow-common-depends-on
     redis:
@@ -30,8 +30,8 @@ services:
   postgres:
     image: postgres:13
     environment:
-      POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: airflow
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
@@ -202,8 +202,8 @@ services:
           echo "   https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html#before-you-begin"
           echo
         fi
-        mkdir -p /sources/logs /sources/dags /sources/plugins
-        chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
+        mkdir -p /sources/airflow/logs /sources/dags /sources/airflow/plugins
+        chown -R "${AIRFLOW_UID}:0" /sources/airflow/{logs,dags,plugins}
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
     environment:
