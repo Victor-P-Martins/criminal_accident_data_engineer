@@ -1,4 +1,4 @@
-from orchestrator.dags.utils import Request
+from airflow.dags.src import Request
 
 
 def test_request_get_successful():

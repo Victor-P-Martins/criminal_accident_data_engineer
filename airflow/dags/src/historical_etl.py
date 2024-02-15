@@ -3,7 +3,7 @@ import os
 import polars as pl
 from polars import DataFrame
 from dotenv import load_dotenv
-from orchestrator.dags.utils import Request
+from .request import Request
 
 
 load_dotenv(".env")
