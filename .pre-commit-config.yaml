@@ -15,7 +15,7 @@ repos:
       types: [python]
       args:
         [
-          "-rn", # Only display messages
+          "-rn",
           "--fail-under=8"
         ]
 -   repo: local
