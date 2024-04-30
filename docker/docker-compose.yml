@@ -60,6 +60,17 @@ services:
       start_period: 5s
     restart: always
 
+  docker_pgadmin4:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    expose:
+      - "80"
+    ports:
+      - "800:80"
+
   redis:
     image: redis:latest
     expose:
