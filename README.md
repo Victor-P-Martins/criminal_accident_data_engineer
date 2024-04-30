@@ -3,7 +3,7 @@
 Status: Em Andamento
 Área: Data Engineer
 
-![Untitled](images\Banner.png)
+![Untitled](images/Banner.png)
 
 # Descrição
 
