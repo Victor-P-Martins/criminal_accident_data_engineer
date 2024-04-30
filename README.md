@@ -1,3 +1,106 @@
+[English Version](#data-engineering-crimes-and-accidents-in-são-francisco)
+
+[Portuguese Version](#engenharia-de-dados-crimes-e-acidentes-em-são-francisco)
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=Apache%20Airflow&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+
+# Data Engineering - Crimes and Accidents in São Francisco
+
+Status: In Progress
+
+Area: Data Engineer
+
+![Untitled](images/Banner.png)
+
+# Description
+This project aims to complete a full cycle of a simple data engineering service. The system will consume data from a public API, store this historical data in a structured database, and make it available for the data visualization system for analysis.
+
+# Architecture
+![Arquitetura_Sistema](images/Architecture.png)
+# API
+[API Oficial](https://www.notion.so/Teste-da-api-do-1Password-env-via-1password-d0fa81daf8fa4b65b356d8cd9b303be6?pvs=21) | [Documentação Oficial](https://datasf.gitbook.io/datasf-dataset-explainers/sfpd-incident-report-2018-to-present)
+
+The chosen data source for this project was a public API provided by the government of the city of São Francisco. This API provides data from the San Francisco Police Department (SFPD). The dataset compiles data from the department's Crime Data Warehouse (CDW) to provide information on accident and crime reports.
+
+## Are incident reports the 'official' count of crimes?
+No. While incident reports may serve as a basis for official crime statistics, official crime statistics are governed by the FBI's UCR (Uniform Crime Reporting) and NIBRS (National Incident-Based Reporting System) programs. The most recent version of official UCR/NIBRS statistics released by the SFPD can be found through the California Department of Justice's Open Justice portal.
+
+## What are incident reports?
+This dataset includes incident reports recorded from January 1, 2018. These reports are submitted by officers or self-reported by members of the public through the SFPD's online reporting system. The reports are categorized into the following types, based on how they were received and the type of incident:
+
+Initial Reports: the first report filed for an incident.
+Supplemental Reports: a follow-up report to an initial report, Coplogic, or vehicle report.
+Coplogic Reports: incident reports submitted by members of the public using the SFPD's online reporting system.
+Vehicle Reports: incident reports related to stolen and/or recovered vehicles.
+All incident reports must be approved by a sergeant or lieutenant supervisor. Once a supervising officer has provided approval through electronic signature, no further changes can be made to the initial report. If changes or additional information are needed or discovered during an investigation, a supplemental report may be generated to capture updates.
+
+For example, a supplemental report may be issued to indicate an arrest made, a missing person found, or to provide additional details of properties taken in a theft. To differentiate between initial and supplemental reports, a filter can be applied to the "Report Type Description" field. Not filtering between initial and supplemental reports may lead to duplicate counting of incidents.
+
+The department uses a Secure File Transfer Protocol (SFTP) protocol to share incident data daily with DataSF.
+
+## Multiple Incident Codes
+Incident reports may have one or more associated incident codes. For example, an officer may have a warrant and, upon making the arrest, discovers narcotics in the individual's possession. The officer would record two incident codes: (1) for the warrant and (2) for the discovery of narcotics.
+
+When there are multiple incident codes, the Incident ID, Incident Number, and CAD Numbers remain the same, and the Row ID field can be used as a unique identifier for each data row. An example is provided below.
+
+Incident Datetime	Row ID	Incident ID	Incident Number	CAD Number	Incident Code	Incident Category
+1/1/18 13:20	61902222223	60044	180999999	180222222	62050	Warrant
+1/1/18 13:20	61903333320	60044	180999999	180222222	16710	Drug Offense
+
+## What is not captured in this dataset?
+Incident reports do not necessarily capture all data related to policing and crime. This dataset does not include citations (unless an associated incident report has been written with the citation). For example, a routine speeding ticket generally does not require an incident report; however, a speeding ticket revealing a driver with a warrant resulting in an arrest would require an incident report.
+
+This dataset does not include any identifiable information about any person (suspect, victim, reporting party, officer, witness, etc.). This dataset may not capture other law enforcement incidents within San Francisco (e.g., BART PD, National Park Police, etc.) or reports not submitted to the SFPD.
+
+The information cited above was taken from the official API documentation, which can be read directly on the official page.
+
+[Source](https://datasf.gitbook.io/datasf-dataset-explainers/sfpd-incident-report-2018-to-present)
+
+# Chosen Technologies
+For this project, open-source technologies that are widely used in the data engineering market were chosen, considering scalability and the barrier to entry for new participants according to project requirements.
+
+## Python
+Python was chosen as the language to act as the Producer that will retrieve information from the source and perform data ingestion directly into the relational database that will store historical data. The language was chosen for its integrations and tools widely used by the data engineering market, facilitating integrations and tasks that need to be performed. The libraries can be seen in the requirements file.
+
+Some libraries were also used to ensure the security and quality of the code. For this, pre-commit was used, allowing the insertion of scripts that are executed when committing to the repository. The scripts used were:
+
+## Pylint
+Pylint is a tool for Python that analyzes source code for errors, checks style according to PEP 8, and promotes good programming practices. It helps improve the quality and consistency of Python code by giving a score based on defined rules of good practices for the analyzed code. It was defined for this project that codes with a score below 8 will not be accepted in commits.
+
+## Black
+Black is an automatic formatting tool for Python code. It enforces consistent style on the code, eliminating formatting debates. Formatting is applied automatically, making it easier to standardize and improve code readability.
+
+## Pytest
+Pytest is a testing library for Python that offers a concise and easy-to-use syntax. It facilitates the writing and execution of automated tests, being widely adopted by the Python developer community.
+
+## Detect-Secrets
+Detect-Secrets is a tool used to detect sensitive information, such as passwords, in code repositories. Designed for integration with CI/CD, it helps prevent accidental exposure of secrets in commits.
+
+## Polars
+Polars is a data processing library written in Rust, with an interface for Python. It offers efficient and expressive data manipulation operations, being especially suitable for large datasets. Polars is designed to provide fast performance and easy integration with the Python data science ecosystem. In summary, the library simplifies data analysis and manipulation in Python, leveraging Rust's efficiency in the background with higher performance than its direct competitor, Pandas.
+Despite the need for several improvements in the Polars environment to reach the maturity level of Pandas, it is still a good choice for projects with a larger data load. In this specific project, there were no significant gains with the choice of Polars over Pandas due to the low volume of data processed and the application's machine configurations.
+
+## Apache Airflow
+Apache Airflow is an open-source workflow orchestration platform designed to automate, schedule, and monitor complex tasks in data pipelines. Developed in Python, Airflow allows users to define, schedule, and execute workflows as interactive, code-directed tasks. Its flexible and extensible architecture supports integrations with various data sources and tools, enabling automation of data processes, ETL (Extraction, Transformation, and Loading), report generation, and other operations related to data processing.
+
+## PostgreSQL
+PostgreSQL is an open-source relational database management system. It is known for its robustness, extensibility, and compliance with SQL standards. PostgreSQL offers advanced features such as support for custom data types, extensions, triggers, and stored procedures. Additionally, it has a solid concurrency control system and is highly scalable, making it suitable for a variety of applications, from small projects to large enterprise systems.
+
+Although not ideal for a DataWarehouse project, it was chosen for its ease of use, integrations, and ability to handle the low volume of data processed by the application. Considering that the database will not grow exponentially, PostgreSQL will meet the requirements well, with low cost and low barrier to entry.
+
+## Streamlit
+Streamlit is an open-source Python library that simplifies the creation of interactive web applications for data analysis and visualization. Designed to be easy to use, Streamlit allows developers to quickly turn simple scripts into interactive web applications without extensive web development knowledge.
+
+With a declarative and minimalist approach, Streamlit makes it easy to create applications with interactive widgets, charts, and tables, all from a single Python script. It supports real-time updates and seamlessly integrates with popular data visualization libraries such as Matplotlib, Plotly, and Altair.
+
+## Docker
+Docker is an open-source platform that facilitates the creation, distribution, and execution of applications in containers. Containers are lightweight and independent units that encapsulate an application and all its dependencies, ensuring consistency across different environments.
+
+Docker simplifies the process of development, deployment, and scalability of applications by eliminating inconsistencies between development, testing, and production environments. It allows developers to package an application with its dependencies into a container, ensuring that the application runs the same way in any environment where Docker is installed.
+
 # Engenharia de Dados - Crimes e Acidentes em São Francisco
 
 Status: Em Andamento
