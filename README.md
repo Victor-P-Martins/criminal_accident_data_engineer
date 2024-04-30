@@ -1,9 +1,9 @@
+# Data Engineering - Crimes and Accidents in São Francisco
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=Apache%20Airflow&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
-# Data Engineering - Crimes and Accidents in São Francisco
 
 Status: In Progress
 
@@ -98,6 +98,10 @@ Docker is an open-source platform that facilitates the creation, distribution, a
 Docker simplifies the process of development, deployment, and scalability of applications by eliminating inconsistencies between development, testing, and production environments. It allows developers to package an application with its dependencies into a container, ensuring that the application runs the same way in any environment where Docker is installed.
 
 # Engenharia de Dados - Crimes e Acidentes em São Francisco
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=Apache%20Airflow&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
 Status: Em Andamento
 
