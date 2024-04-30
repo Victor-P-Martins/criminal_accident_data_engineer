@@ -11,7 +11,7 @@ Este projeto tem como objetivo fazer um ciclo completo de um serviço de engenha
 
 # Arquitetura
 
-![Arquitetura_Sistema](images\Architecture.png)
+![Arquitetura_Sistema](images/Architecture.png)
 
 # API
 
