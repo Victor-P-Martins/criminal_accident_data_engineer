@@ -216,3 +216,5 @@ Com uma abordagem declarativa e minimalista, o Streamlit facilita a criação de
 O Docker é uma plataforma de código aberto que facilita a criação, distribuição e execução de aplicativos em contêineres. Os contêineres são unidades leves e independentes que encapsulam um aplicativo e todas as suas dependências, garantindo consistência em diferentes ambientes.
 
 O Docker simplifica o processo de desenvolvimento, implantação e escalabilidade de aplicativos, pois elimina inconsistências entre ambientes de desenvolvimento, teste e produção. Ele permite que os desenvolvedores empacotem um aplicativo com suas dependências em um contêiner, garantindo que o aplicativo execute da mesma maneira em qualquer ambiente onde o Docker esteja instalado.
+
+Teste
